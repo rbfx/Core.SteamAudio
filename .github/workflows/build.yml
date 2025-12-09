@@ -48,7 +48,7 @@ jobs:
 
     env:
       ci_platform: windows
-      ci_target_sdk_name: rebelfork-sdk-Windows-msvc-dll-x64-latest.zip
+      ci_target_sdk_name: rebelfork-sdk-windows-msvc-x64-lib-latest
       ci_upload_release: ${{
                            (github.repository == 'rbfx/Core.SteamAudio')  &&
                            (github.ref == 'refs/heads/master')
@@ -67,13 +67,13 @@ jobs:
         with:
           repository: rbfx/rbfx
           tag: latest
-          fileName: ${{ env.ci_target_sdk_name }}
+          fileName: ${{ env.ci_target_sdk_name }}.7z
 
       - name: Unzip target SDK
         run: |
-          cd ${{ github.workspace }}
-          unzip ${{ env.ci_target_sdk_name }}
-          mv ./SDK ./SDK-target
+          cd '${{ github.workspace }}'
+          7z x '${{ env.ci_target_sdk_name }}.7z' '-o${{ github.workspace }}' -y
+          mv './${{ env.ci_target_sdk_name }}' ./SDK-target
 
       - name: Download Steam Audio SDK
         uses: robinraju/release-downloader@v1.8
